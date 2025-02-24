@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { orderService } from '../services';
-import { createOrder, paginationSchema } from '../utils/validators';
+import { createOrder, paginationSchema } from '../utils';
 
 export const handleOrder = asyncHandler(async (req: Request, res: Response) => {
   const userId = req.user?.id as number;

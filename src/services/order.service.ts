@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { orderRepository, OrderRepository } from '../repositories';
-import { userService } from './user.service';
+import { userService } from '../services';
 import { ApiError } from '../utils';
 
 export class OrderService {

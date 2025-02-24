@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { ApiError } from '../utils';
-import { Secret, verify } from 'jsonwebtoken';
-import { IJwtPayload } from '../interfaces/jwt.interface';
-import { userService } from '../services';
 import asyncHandler from 'express-async-handler';
+import { Secret, verify } from 'jsonwebtoken';
+import { ApiError } from '../utils';
+import { IJwtPayload } from '../interfaces';
+import { userService } from '../services';
 
 export const isAuth = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {

@@ -1,8 +1,8 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import { JsonWebTokenError } from 'jsonwebtoken';
+import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
 import { ApiError } from '../utils';
-import { Prisma } from '@prisma/client';
-import { JsonWebTokenError } from 'jsonwebtoken';
 
 type ErrorType =
   | ApiError

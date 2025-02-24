@@ -1,11 +1,7 @@
 import { Request, Response } from 'express';
-import { authService } from '../services/auth.service';
 import asyncHandler from 'express-async-handler';
-import {
-  loginSchema,
-  registerSchema,
-  verifyOtpSchema,
-} from '../utils/validators';
+import { authService } from '../services';
+import { loginSchema, registerSchema, verifyOtpSchema } from '../utils';
 
 export const handleRegister = asyncHandler(
   async (req: Request, res: Response) => {
