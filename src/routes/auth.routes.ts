@@ -7,4 +7,4 @@ router.post('/register', handleRegister);
 router.post('/login', handleLogin);
 router.post('/verify-otp', handleVerifyOtp);
 
-export default router;
+export { router as authRoutes };

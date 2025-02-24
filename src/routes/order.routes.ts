@@ -6,4 +6,4 @@ const router = Router();
 router.post('/', handleOrder);
 router.get('/', handleOrderWithPagination);
 
-export default router;
+export { router as orderRoutes };
