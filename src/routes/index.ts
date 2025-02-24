@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import orderRoutes from './order.routes.ts';
-import authRoutes from './auth.routes.ts';
-import { isAuth } from '../middlewares/isAuth.middleware.ts';
+import orderRoutes from './order.routes';
+import authRoutes from './auth.routes';
+import { isAuth } from '../middlewares/isAuth.middleware';
 
 const router = Router();
 

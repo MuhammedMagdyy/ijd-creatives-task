@@ -1,8 +1,8 @@
-import { userService } from './user.service.ts';
+import { userService } from './user.service';
 import bcrypt from 'bcryptjs';
 import { Secret, sign } from 'jsonwebtoken';
 import { ApiError } from '../utils';
-import { IJwtPayload } from '../interfaces/jwt.interface.ts';
+import { IJwtPayload } from '../interfaces/jwt.interface';
 
 export class AuthService {
   async register(name: string, email: string, password: string, phone: string) {

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { authService } from '../services/auth.service';
 import asyncHandler from 'express-async-handler';
 import {
@@ -8,7 +8,7 @@ import {
 } from '../utils/validators';
 
 export const handleRegister = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     const { name, email, password, phone } = registerSchema.parse(req.body);
 
     const user = await authService.register(name, email, password, phone);
@@ -23,22 +23,20 @@ export const handleRegister = asyncHandler(
   }
 );
 
-export const handleLogin = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { email, password } = loginSchema.parse(req.body);
+export const handleLogin = asyncHandler(async (req: Request, res: Response) => {
+  const { email, password } = loginSchema.parse(req.body);
 
-    const token = await authService.login(email, password);
+  const token = await authService.login(email, password);
 
-    res.status(200).json({
-      message: 'Logged in successfully',
-      data: {},
-      token,
-    });
-  }
-);
+  res.status(200).json({
+    message: 'Logged in successfully',
+    data: {},
+    token,
+  });
+});
 
 export const handleVerifyOtp = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response) => {
     const { email, otp } = verifyOtpSchema.parse(req.body);
 
     await authService.verifyOtp(email, otp);
