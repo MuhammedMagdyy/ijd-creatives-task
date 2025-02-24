@@ -1,5 +1,7 @@
-import prisma from '../database/client';
 import { Prisma, PrismaClient } from '@prisma/client';
+import prisma from '../database/client';
+import { IPaginationQuery } from '../interfaces';
+import { getPagination } from '../utils';
 
 export class OrderRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -12,11 +14,22 @@ export class OrderRepository {
     return this.prisma.order.findFirst({ where: query });
   }
 
-  async findAll(pageSize: number, pageNumber: number) {
-    return this.prisma.order.findMany({
-      take: pageSize,
-      skip: (pageNumber - 1) * pageSize,
+  async findAll(options: IPaginationQuery) {
+    return await this.prisma.order.findMany({
+      ...getPagination(options),
+      orderBy: { id: 'desc' },
     });
+  }
+
+  async updateOne(
+    query: Prisma.OrderWhereUniqueInput,
+    data: Prisma.OrderUncheckedUpdateInput
+  ) {
+    return this.prisma.order.update({ where: query, data });
+  }
+
+  async deleteOne(query: Prisma.OrderWhereUniqueInput) {
+    return this.prisma.order.delete({ where: query });
   }
 }
 
