@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { UserRepository, userRepository } from '../repositories';
+import { ApiError } from '../utils';
 
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
@@ -10,6 +11,16 @@ export class UserService {
 
   async findOne(query: Prisma.UserWhereUniqueInput) {
     return this.userRepository.findOne(query);
+  }
+
+  async findUserById(id: number) {
+    const user = await this.userRepository.findOne({ id });
+
+    if (!user) {
+      throw new ApiError('User not found', 404);
+    }
+
+    return user;
   }
 
   async updateOne(

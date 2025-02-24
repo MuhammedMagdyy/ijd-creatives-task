@@ -1,49 +1,49 @@
-import bcrypt from 'bcryptjs';
-import { Secret, sign } from 'jsonwebtoken';
-import { userService } from '../services';
-import { ApiError } from '../utils';
-import { IJwtPayload } from '../interfaces';
+import { ILoginUser, IRegisterUser } from '../interfaces';
+import { HashingService, JwtService, userService } from '../services';
+import { ApiError, userResponse } from '../utils';
 
 export class AuthService {
-  async register(name: string, email: string, password: string, phone: string) {
-    const user = await userService.findOne({ email });
-    if (user) {
+  async register(userInfo: IRegisterUser) {
+    const existingUser = await userService.findOne({ email: userInfo.email });
+    if (existingUser) {
       throw new ApiError('User already exists', 409);
     }
 
-    const hashedPassowrd = await bcrypt.hash(password, 12);
-    const registeredUser = await userService.createOne({
-      name,
-      email,
+    const hashedPassowrd = await HashingService.hash(userInfo.password);
+    await userService.createOne({
+      name: userInfo.name,
+      email: userInfo.email,
       password: hashedPassowrd,
-      phone,
+      phone: userInfo.phone,
     });
-    const token = this.generateAccessToken({ id: registeredUser.id });
 
-    console.log(`Email sent successfully to ${email}, and OTP is ${1234}`);
-
-    return { registeredUser, token };
+    console.log(
+      `Email sent successfully to ${userInfo.email}, and OTP is ${1234}`
+    );
   }
 
-  async login(email: string, password: string) {
-    const user = await userService.findOne({ email });
-    if (!user) {
+  async login(userInfo: ILoginUser) {
+    const existingUser = await userService.findOne({ email: userInfo.email });
+    if (!existingUser) {
       throw new ApiError('User not found', 404);
     }
 
-    if (!user.isVerified) {
-      throw new ApiError('verify ur email', 400);
+    if (!existingUser.isVerified) {
+      throw new ApiError('Account not verified. Please check your email.', 403);
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await HashingService.compare(
+      userInfo.password,
+      existingUser.password
+    );
 
     if (!isMatch) {
       throw new ApiError('Invalid credintials', 401);
     }
 
-    const token = this.generateAccessToken({ id: user.id });
+    const tokens = JwtService.generateTokens({ id: existingUser.id });
 
-    return token;
+    return { user: userResponse(existingUser), tokens };
   }
 
   async verifyOtp(email: string, otp: string) {
@@ -58,16 +58,6 @@ export class AuthService {
     }
 
     await userService.updateOne({ email }, { isVerified: true });
-  }
-
-  private generateAccessToken({
-    exp: _exp,
-    iat: _iat,
-    ...payload
-  }: IJwtPayload) {
-    return sign(payload, process.env.ACCESS_TOKEN_SECRET as Secret, {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
-    });
   }
 }
 
