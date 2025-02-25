@@ -28,7 +28,6 @@
 
 - 🔒 **Authentication & Authorization** (JWT).
 - ✅ **CRUD** Operations for orders.
-- 🔄 **Token Refresh**.
 
 ---
 
