@@ -69,13 +69,36 @@ const handlePrismaError = (
   error: Prisma.PrismaClientKnownRequestError
 ): { status: number; message: string } => {
   switch (error.code) {
+    case 'P2000':
+      return {
+        status: 400,
+        message: 'Value too long for a database column. Please shorten it.',
+      };
     case 'P2002':
       return {
         status: 400,
-        message: `Duplicate field value: ${error.meta?.target as string}`,
+        message: `Duplicate value for: ${error.meta?.target}`,
       };
     case 'P2003':
-      return { status: 400, message: 'Foreign key constraint failed' };
+      return {
+        status: 400,
+        message: 'Foreign key constraint failed. Check related entities.',
+      };
+    case 'P2014':
+      return {
+        status: 400,
+        message: 'Invalid WHERE clause. Check relationships between models.',
+      };
+    case 'P2023':
+      return {
+        status: 400,
+        message: 'Invalid data format. Please check your input values.',
+      };
+    case 'P2025':
+      return {
+        status: 400,
+        message: 'Record not found. Please verify your input.',
+      };
     default:
       return {
         status: 500,
