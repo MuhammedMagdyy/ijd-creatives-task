@@ -4,6 +4,7 @@ import {
   processUserRegistration,
   processOtpVerification,
 } from '../controllers';
+import { oneMinuteLimiter, twentyFourHourLimiter } from '../middlewares';
 
 const router = Router();
 /**
@@ -119,6 +120,11 @@ router.post('/login', processUserLogin);
  *       500:
  *         description: Internal Server Error
  */
-router.post('/verify-otp', processOtpVerification);
+router.post(
+  '/verify-otp',
+  oneMinuteLimiter,
+  twentyFourHourLimiter,
+  processOtpVerification
+);
 
 export { router as authRoutes };
