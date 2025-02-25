@@ -5,6 +5,7 @@ import cors from 'cors';
 import routes from './routes';
 import { errorHandler } from './middlewares';
 import { corsConfig } from './config';
+import setupSwagger from './swagger';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const port = process.env.PORT || defaultPort;
 app.use(helmet());
 app.use(cors(corsConfig));
 app.use(express.json());
+setupSwagger(app);
 app.use('/api/v1', routes);
 app.use(errorHandler);
 
