@@ -121,7 +121,7 @@ const swaggerOptions = {
               description: 'Order details',
             },
             price: {
-              type: 'decimal',
+              type: 'number',
               description: 'Order price',
             },
             createdAt: {
@@ -145,7 +145,7 @@ const swaggerOptions = {
               example: 'Testing order',
             },
             price: {
-              type: 'decimal',
+              type: 'number',
               example: 1,
             },
           },
@@ -158,7 +158,7 @@ const swaggerOptions = {
               example: 'Updated order details',
             },
             price: {
-              type: 'decimal',
+              type: 'number',
               example: 2,
             },
           },
