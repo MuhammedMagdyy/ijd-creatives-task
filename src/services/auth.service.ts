@@ -25,7 +25,7 @@ export class AuthService {
   async login(userInfo: ILoginUser) {
     const existingUser = await userService.findOne({ email: userInfo.email });
     if (!existingUser) {
-      throw new ApiError('User not found', 404);
+      throw new ApiError('Invalid credintials', 401);
     }
 
     if (!existingUser.isVerified) {
