@@ -14,9 +14,7 @@ export class OrderService {
       throw new ApiError('User not found', 404);
     }
 
-    const order = this.orderRepository.createOne({ userId, details, price });
-
-    return order;
+    return this.orderRepository.createOne({ userId, details, price });
   }
 
   async findOne(query: Prisma.OrderWhereInput) {
