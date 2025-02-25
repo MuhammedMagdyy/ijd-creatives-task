@@ -3,7 +3,7 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import routes from './routes';
-import { errorHandler } from './middlewares';
+import { errorHandler, xss } from './middlewares';
 import { corsConfig } from './config';
 import setupSwagger from './swagger';
 
@@ -15,7 +15,8 @@ const port = process.env.PORT || defaultPort;
 
 app.use(helmet());
 app.use(cors(corsConfig));
-app.use(express.json());
+app.use(express.json({ limit: '5mb' }));
+app.use(xss);
 setupSwagger(app);
 app.use('/api/v1', routes);
 app.use(errorHandler);
